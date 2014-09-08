@@ -6,12 +6,10 @@ var palabras = [
    'nuestra',
    'ejemplo',
    'acuerdo',
-   'habían',
    'usted',
    'estados',
    'hizo',
    'nadie',
-   'países',
    'horas',
    'posible',
    'tarde',
@@ -27,7 +25,6 @@ var palabras = [
    'padre',
    'gente',
    'final',
-   'relación',
    'cuerpo',
    'obra',
    'incluso',
@@ -95,7 +92,7 @@ Tablero.prototype.chooseRandomWord = function (aleatorio) {
     return palabraAdivinar;
 }
 
-Tablero.prototype.checkWorks = function(inputWord,aleatorio) {
+Tablero.prototype.checkWorks = function(inputWord,aleatorio,panelLetrasUsadas) {
         var fin = this.letrasUsadas.length;
         var noUsada = true;
         for (var i = 0; i <= fin ; i++) {
@@ -109,6 +106,7 @@ Tablero.prototype.checkWorks = function(inputWord,aleatorio) {
             this.letrasUsadas.push(inputWord.value);
         };
         cleanInput(inputWord);
+        this.AppendWordToPanel(panelLetrasUsadas,this.letrasUsadas);
 };
 
 Tablero.prototype.ahorcado = function(letra, aleatorio, correctas) {
@@ -177,15 +175,22 @@ Tablero.prototype.aviso = function(idcontent,idtitle, msg) {
 }
 
 Tablero.prototype.advertencias = function(idcontent, msg) {
-   this.contenedor = document.getElementById(idcontent);
+   this.advertencia = document.getElementById(idcontent);
 
-   this.contenedor.style.display = "block";
-   this.contenedor.innerHTML = msg;
+   this.advertencia.style.display = "block";
+   this.advertencia.innerHTML = msg;
 
    setTimeout(function(){
-        lienzo.contenedor.style.display = "none";
+        lienzo.advertencia.style.display = "none";
    }, 7000);
 }
+
+Tablero.prototype.AppendWordToPanel = function(panelLetrasUsadas, letrasUsadas) {
+    panelLetrasUsadas.innerHTML = "";
+    for(var letra in letrasUsadas){
+        panelLetrasUsadas.innerHTML += "<span>"+letrasUsadas[letra]+"</span>";
+    }
+};
 
 var Texto = function(cont, text, x, y, color)
 {
@@ -204,6 +209,7 @@ Texto.prototype.dibujar = function ()
 
 function iniciar()
 {
+    var panelLetrasUsadas = document.getElementById("letras-usadas");
     var randomNumber = getRandom(0, palabras.length);
     var inputWord = document.getElementById("letra");
     cleanInput(inputWord);
@@ -216,10 +222,11 @@ function iniciar()
     var contexto = canvas.getContext("2d");
 
     lienzo = new Tablero(contexto,"fondo.png",0,0);
+
     lienzo.mostrarBtn(inputWord, btn);
     btn.addEventListener('click', function ()
     {
-        lienzo.checkWorks(inputWord,randomNumber);
+        lienzo.checkWorks(inputWord,randomNumber,panelLetrasUsadas);
     });
 
     btnAviso.addEventListener('click', function ()

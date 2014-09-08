@@ -26,7 +26,14 @@
         <input type="text" maxlength="1" id="letra" value="">
         <a href="#" id="btn-aceptar" class="animated bounceIn">✓</a>
     </div>
-    <canvas id="lienzo"></canvas>
+    <div id="wrapper">
+        <canvas  class="cols" id="lienzo"></canvas>
+        <section class="cols" >
+            <h6>Caracteres ya Usados o No Permitidos</h6>
+            <div id="letras-usadas">
+            </div>
+        </section>
+    </div>
     <div id="advertencias" class="animated fadeInLeft">
         Ingrese un caracter valido / que no haya sido ingresado
     </div>
